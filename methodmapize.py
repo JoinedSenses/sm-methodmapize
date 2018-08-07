@@ -23,7 +23,8 @@ for i in range(1, len(sys.argv)):
 		code = f.read()
 
 		print('Methodmapizing {}'.format(sys.argv[i]))
-
+		
+		# AdminId
 		code = re.sub(r"(?<!\w)BindAdminIdentity\s*\(\s*([^\,]+)\s*,\s*", r"\1.BindIdentity(", code)
 		code = re.sub(r"(?<!\w)CanAdminTarget\s*\(\s*([^\,]+)\s*,\s*", r"\1.CanTarget(", code)
 		code = re.sub(r"(?<!\w)GetAdminFlags\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetFlags(", code)
@@ -49,7 +50,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)SetAdmGroupImmunityLevel\s*\(\s*([^\,]+)\s*,\s*([^\)]+)\s*\)", r"\1.ImmunityLevel = \2", code)
 
 		# ArrayList
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CreateArray", r"ArrayList \1 = new Arraylist", code)
+		code = re.sub(r"\w+ (\w+) = CreateArray", r"ArrayList \1 = new Arraylist", code)
 		code = re.sub(r"(?<!\w)ClearArray\s*\(\s*([^\)]+)\s*\)", r"\1.Clear()", code)
 		code = re.sub(r"(?<!\w)CloneArray\s*\(\s*([^\)]+)\s*\)", r"\1.Clone()", code)
 		code = re.sub(r"(?<!\w)CreateArray\s*\(\s*([^\)]*)\s*\)", r"new ArrayList(\1)", code)
@@ -130,7 +131,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)UnhookConVarChange\s*\(\s*([^\,]+)\s*,\s*", r"\1.RemoveChangeHook(", code)
 
 		# DataPack
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CreateDataPack", r"DataPack \1 = new DataPack", code)
+		code = re.sub(r"\w+ (\w+) = CreateDataPack", r"DataPack \1 = new DataPack", code)
 		code = re.sub(r"(?<!\w)CreateDataPack\s*\(\s*\)", r"new DataPack()", code)
 		code = re.sub(r"(?<!\w)WritePackCell\s*\(\s*([^\,]+)\s*,\s*", r"\1.WriteCell(", code)
 		code = re.sub(r"(?<!\w)WritePackFloat\s*\(\s*([^\,]+)\s*,\s*", r"\1.WriteFloat(", code)
@@ -221,7 +222,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)CloseHandle\s*\(\s*([^\)]+)\s*\)", r"delete \1", code)
 
 		# KeyValues
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CreateKeyValues", r"KeyValues \1 = new KeyValues", code)
+		code = re.sub(r"\w+ (\w+) = CreateKeyValues", r"KeyValues \1 = new KeyValues", code)
 		code = re.sub(r"(?<!\w)CreateKeyValues\s*\(\s*([^\)]+)\s*\)", r"new KeyValues(\1)", code)
 		code = re.sub(r"(?<!\w)KvSetString\s*\(\s*([^\,]+)\s*,\s*", r"\1.SetString(", code)
 		code = re.sub(r"(?<!\w)KvSetNum\s*\(\s*([^\,]+)\s*,\s*", r"\1.SetNum(", code)
@@ -258,7 +259,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)KvGetSectionSymbol\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetSectionSymbol(", code)
 		
 		# Menu
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CreateMenu", r"Menu \1 = new Menu", code)
+		code = re.sub(r"\w+ (\w+) = CreateMenu", r"Menu \1 = new Menu", code)
 		code = re.sub(r"(?<!\w)CreateMenu\s*\(\s*([^\)]+)\s*\)", r"new Menu(\1)", code)
 		code = re.sub(r"(?<!\w)DisplayMenu\s*\(\s*([^\,]+)\s*,\s*", r"\1.Display(", code)
 		code = re.sub(r"(?<!\w)DisplayMenuAtItem\s*\(\s*([^\,]+)\s*,\s*", r"\1.DisplayAt(", code)
@@ -288,7 +289,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)SetVoteResultCallback\s*\(\s*([^\,]+)\s*,\s*([^\)]+)\s*\)", r"\1.VoteResultCallback = \2", code)
 
 		# Panel
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CreatePanel", r"Panel \1 = new Panel", code)
+		code = re.sub(r"\w+ (\w+) = CreatePanel", r"Panel \1 = new Panel", code)
 		code = re.sub(r"(?<!\w)CreatePanel\s*\(\s*([^\)]*)\s*\)", r"new Panel(\1)", code)
 		code = re.sub(r"(?<!\w)GetPanelStyle\s*\(\s*([^\)]+)\s*\)", r"\1.Style", code)
 		code = re.sub(r"(?<!\w)SetPanelTitle\s*\(\s*([^\,]+)\s*,\s*", r"\1.SetTitle(", code)
@@ -304,13 +305,13 @@ for i in range(1, len(sys.argv)):
 		# TODO: Protobuf
 
 		# Regex
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CompileRegex", r"Regex \1 = new Regex", code)
+		code = re.sub(r"\w+ (\w+) = CompileRegex", r"Regex \1 = new Regex", code)
 		code = re.sub(r"(?<!\w)CompileRegex\s*\(\s*([^\)]*)\s*\)", r"new Regex(\1)", code)
 		code = re.sub(r"(?<!\w)MatchRegex\s*\(\s*([^\,]+)\s*,\s*", r"\1.Match(", code)
 		code = re.sub(r"(?<!\w)GetRegexSubString\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetSubString(", code)
 
 		# SMCParser
-		code = re.sub(r"[\w]+ ([\w\d_]+) = SMC_CreateParser", r"SMCParser \1 = new SMCParser", code)
+		code = re.sub(r"\w+ (\w+) = SMC_CreateParser", r"SMCParser \1 = new SMCParser", code)
 		code = re.sub(r"(?<!\w)SMC_CreateParser\s*\(\s*\)", r"new SMCParser()", code)
 		code = re.sub(r"(?<!\w)SMC_ParseFile\s*\(\s*([^\,]+)\s*,\s*", r"\1.ParseFile(", code)
 		code = re.sub(r"(?<!\w)SMC_SetParseStart\s*\(\s*([^\,]+)\s*,\s*([^\)]+)\s*\)", r"\1.OnStart = \2", code)
@@ -323,7 +324,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)SMC_GetErrorString\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetErrorString(", code)
 
 		# TopMenu
-		code = re.sub(r"[\w]+ ([\w\d_]+) = CreateTopMenu", r"TopMenu \1 = new TopMenu", code)
+		code = re.sub(r"\w+ (\w+) = CreateTopMenu", r"TopMenu \1 = new TopMenu", code)
 		code = re.sub(r"(?<!\w)CreateTopMenu\s*\(\s*([^\)]*)\s*\)", r"new TopMenu(\1)", code)
 		code = re.sub(r"(?<!\w)LoadTopMenuConfig\s*\(\s*([^\,]+)\s*,\s*", r"\1.LoadConfig(", code)
 		code = re.sub(r"(?<!\w)AddToTopMenu\s*\(\s*([^\,]+)\s*,\s*([^\,]+)\s*,\s*TopMenuObject_Category", r"\1.AddCategory(\2, ", code)
