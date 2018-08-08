@@ -8,6 +8,16 @@ import sys
 import re
 import os.path
 
+def replaceDataType(dataType, code):
+	pattern = r"(\w+) = new ("+dataType+")"
+	for m in re.finditer(pattern, code):
+		var = m.group(1)
+		var2 = m.group(2)
+		pattern = r"\w+ " + var
+		replacement = var2+" "+var
+		code = re.sub(pattern, replacement, code)
+	return code
+
 if len(sys.argv) < 2:
 	print('Give at least one file to methodmapize: file1.sp file2.sp ...')
 	sys.exit(1)
@@ -340,6 +350,10 @@ for i in range(1, len(sys.argv)):
 
 		# _: int retagging
 		#code = re.sub(r"_:([a-zA-Z0-9_]+(\[[a-zA-Z0-9_]+\])*)", r"view_as<int>(\1)", code)
+		
+		dataTypes = ["ArrayList", "ArrayStack", "StringMap", "DataPack", "Transaction", "KeyValues", "Menu", "Panel", "Regex", "SMCParser", "TopMenu"]
+		for dataType in dataTypes:
+			code = replaceDataType(dataType, code)
 
 	with open(sys.argv[i] + '.m', 'w', encoding='utf-8') as f:
 		f.write(code)
