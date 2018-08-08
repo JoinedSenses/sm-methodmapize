@@ -72,6 +72,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)SwapArrayItems\s*\(\s*([^\,]+)\s*,\s*", r"\1.SwapAt(", code)
 
 		# ArrayStack
+		code = re.sub(r"\w+ (\w+) = CreateArray", r"ArrayList \1 = new ArrayStack", code)
 		code = re.sub(r"(?<!\w)CreateStack\s*\(\s*([^\)]*)\s*\)", r"new ArrayStack(\1)", code)
 		code = re.sub(r"(?<!\w)IsStackEmpty\s*\(\s*([^\)]+)\s*\)", r"\1.Empty", code)
 		code = re.sub(r"(?<!\w)PopStackArray\s*\(\s*([^\,]+)\s*,\s*", r"\1.PopArray(", code)
