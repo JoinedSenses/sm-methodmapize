@@ -120,7 +120,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r"(?<!\w)GetConVarDefault\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetDefault(", code)
 		code = re.sub(r"(?<!\w)GetConVarFlags\s*\(\s*([^\)]+)\s*\)", r"\1.Flags", code)
 		code = re.sub(r"(?<!\w)GetConVarFloat\s*\(\s*([^\)]+)\s*\)", r"\1.FloatValue", code)
-		code = re.sub(r"(?<!\w)GetConVarInt\s*\(\s*([^\)]+)\s*\)", r"\1.IntValue", code)
+		code = re.sub(r"(?<!\w)GetConVarInt\s*\(\s*([\w\(\"]+\s*\))\)", r"\1.IntValue", code)
 		code = re.sub(r"(?<!\w)GetConVarName\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetName(", code)
 		code = re.sub(r"(?<!\w)GetConVarString\s*\(\s*([^\,]+)\s*,\s*", r"\1.GetString(", code)
 		code = re.sub(r"(?<!\w)HookConVarChange\s*\(\s*([^\,]+)\s*,\s*", r"\1.AddChangeHook(", code)
