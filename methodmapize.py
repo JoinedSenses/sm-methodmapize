@@ -13,7 +13,7 @@ def replaceDataType(dataType, code):
 	for m in re.finditer(pattern, code):
 		var = m.group(1)
 		var2 = m.group(2)
-		pattern = r"\w+ " + var
+		pattern = r"Handle " + var
 		replacement = var2+" "+var
 		code = re.sub(pattern, replacement, code)
 	return code
