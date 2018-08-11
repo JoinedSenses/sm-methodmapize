@@ -13,7 +13,7 @@ if len(sys.argv) < 2:
 	sys.exit(1)
 
 def replaceDataType(dataType, code):
-	pattern = r'(\w+) = new ("+dataType+")'
+	pattern = r'(\w+) = new ('+dataType+')'
 	for m in re.finditer(pattern, code):
 		var = m.group(1)
 		var2 = m.group(2)
