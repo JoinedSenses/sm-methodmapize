@@ -215,6 +215,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'(?<!\w)SetEventBroadcast\s*\(\s*([^\,]+)\s*,\s*([^\)]+)\s*\)', r'\1.BroadcastDisabled = \2', code)
 
 		# DirectoryListing
+		code = re.sub(r'(?<!\w)\w+ (.*?)\s*=\s*(OpenDirectory)', r'DirectoryListing \1 = \2', code)
 		code = re.sub(r'(?<!\w)ReadDirEntry\s*\(\s*([^\,]+)\s*,\s*', r'\1.GetNext(', code)
 
 		# File
