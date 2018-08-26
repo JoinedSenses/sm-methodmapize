@@ -4,6 +4,11 @@
 # By Peace-Maker
 # Version 1.0
 
+
+# NOTE: DO NOT RELY ON THIS SCRIPT. IT IS EXPERIMENTAL AND
+# STILL IN DEVELOPMENT. ALWAYS DIFFCHECK CHANGES
+
+
 import sys
 import re
 import os.path
