@@ -504,7 +504,7 @@ for i in range(1, len(sys.argv)):
 			code = re.sub(pattern, replace, code)
 
 		# ***************************************
-		# socket(even though this directly SM, I've included it)
+		# socket(even though this isn't included in SM, I've added it)
 		m = re.search(r'\bSocketCreate\([ \t]*.*?[ \t]*,[ \t]*(.*?)[ \t]*\)', code)
 		if m:
 			SocketErrorCB = m.group(1)
