@@ -2,6 +2,7 @@
 # Methodmapizer for SourcePawn 1.7+
 # Replaces all native calls with their equivalent methodmap call.
 # Replaces old syntax declarations with new syntax
+# Formats code for readability
 # By Peace-Maker, JoinedSenses
 # Version 1.1Full
 
@@ -235,9 +236,9 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bGetTrieSnapshotKey[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.GetKey(', code)
 		code = re.sub(r'\bTrieSnapshotLength[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'\1.Length', code)
 
-		# TODO
-		# BfRead
-		# BfWrite
+		# BfRead/BfWrite
+		code = re.sub(r'\bBfRead(\w+)\((\w+)[, ]+', r'\2.Read\1(', code)
+		code = re.sub(r'\bBfWrite(\w+)\((\w+)[, ]+', r'\2.Write\1(', code)
 
 		# ConVar
 		code = re.sub(r'\bGetConVarBool[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'\1.BoolValue', code)
@@ -435,7 +436,8 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bGetPanelCurrentKey[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'\1.CurrentKey', code)
 		code = re.sub(r'\bSetPanelCurrentKey[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*([^\)]+)[ \t]*\)', r'\1.CurrentKey = \2', code)
 
-		# TODO: Protobuf
+		# Protobuf
+		code = re.sub(r'\bPb((?:Add|Read|Set|Get|Remove)\w+)\((\w+)[, ]+', r'\2.\1(', code)
 
 		# Regex
 		code = re.sub(r'\bCompileRegex[ \t]*\([ \t]*([^\)]*)[ \t]*\)', r'new Regex(\1)', code)
