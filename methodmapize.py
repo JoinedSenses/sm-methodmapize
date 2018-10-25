@@ -2,7 +2,6 @@
 # Methodmapizer for SourcePawn 1.7+
 # Replaces all native calls with their equivalent methodmap call.
 # Replaces old syntax declarations with new syntax
-# Formats code for readability
 # By Peace-Maker, JoinedSenses
 # Version 1.1Full
 
@@ -54,7 +53,7 @@ def replFileType(code):
 	for m in re.finditer(pattern, code):
 		var = m.group(1)
 		pattern = r'Handle[ \t]+'+var+r'\b'
-		replacement = r'File[ \t]+' + var
+		replacement = r'File ' + var
 		code = re.sub(pattern, replacement, code)
 	return code
 
@@ -237,8 +236,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bTrieSnapshotLength[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'\1.Length', code)
 
 		# BfRead/BfWrite
-		code = re.sub(r'\bBfRead(\w+)\((\w+)[, ]+', r'\2.Read\1(', code)
-		code = re.sub(r'\bBfWrite(\w+)\((\w+)[, ]+', r'\2.Write\1(', code)
+		code = re.sub(r'\bBf((?:Read|Write)\w+)\((\w+)[, ]*', r'\2.\1(', code)
 
 		# ConVar
 		code = re.sub(r'\bGetConVarBool[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'\1.BoolValue', code)
@@ -437,7 +435,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bSetPanelCurrentKey[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*([^\)]+)[ \t]*\)', r'\1.CurrentKey = \2', code)
 
 		# Protobuf
-		code = re.sub(r'\bPb((?:Add|Read|Set|Get|Remove)\w+)\((\w+)[, ]+', r'\2.\1(', code)
+		code = re.sub(r'\bPb((?:Add|Read|Set|Get|Remove)\w+)\((\w+)[, ]*', r'\2.\1(', code)
 
 		# Regex
 		code = re.sub(r'\bCompileRegex[ \t]*\([ \t]*([^\)]*)[ \t]*\)', r'new Regex(\1)', code)
@@ -539,7 +537,7 @@ for i in range(1, len(sys.argv)):
 		# Update invalid_handle to null
 		code = re.sub(r'INVALID_HANDLE', r'null', code)
 
-		code = re.sub(r'iClient', r'client', code)
+		code = re.sub(r'\biClient', r'client', code)
 
 		# Check to remove unrequired var type in BuildPath (idk, i saw a plugin do this, so i added it)
 		code = re.sub(r'(BuildPath\()[ \t]*PathType:*', r'\1', code)
