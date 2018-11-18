@@ -455,7 +455,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bCreateTopMenu[ \t]*\([ \t]*([^\)]*)[ \t]*\)', r'new TopMenu(\1)', code)
 		code = re.sub(r'\bLoadTopMenuConfig[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.LoadConfig(', code)
 		code = re.sub(r'\bAddToTopMenu[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*([^\,]+)[ \t]*,[ \t]*TopMenuObject_Category', r'\1.AddCategory(\2, ', code)
-		code = re.sub(r'\bAddToTopMenu[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*([^\,]+)[ \t]*,[ \t]*TopMenuObject_Item', r'\1.AddItem(\2, ', code)
+		code = re.sub(r'\bAddToTopMenu[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*([^\,]+)[ \t]*,[ \t]*TopMenuObject_Item', r'\1.AddItem(\2', code)
 		code = re.sub(r'\bGetTopMenuInfoString[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.GetInfoString(', code)
 		code = re.sub(r'\bGetTopMenuObjName[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.GetObjName(', code)
 		code = re.sub(r'\bRemoveFromTopMenu[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.Remove(', code)
