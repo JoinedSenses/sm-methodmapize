@@ -621,7 +621,7 @@ for i in range(1, len(sys.argv)):
 		# Handle var -> ConVar var
 		for m in re.finditer(r'([\w_]+)[ \t]*=[ \t]*FindConVar\(', code):
 			var = m.group(1)
-			pattern = r'Handle[ \t]'+var+r'\b'
+			pattern = r'Handle[ \t]+'+var+r'\b'
 			replace = r'ConVar '+var
 			code = re.sub(pattern, replace, code)
 
