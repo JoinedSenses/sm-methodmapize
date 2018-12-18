@@ -3,7 +3,7 @@
 # Replaces all native calls with their equivalent methodmap call.
 # Replaces old syntax declarations with new syntax
 # By Peace-Maker, JoinedSenses
-# Version 1.1Full
+# Version 1.2Full
 
 
 # NOTE: DO NOT RELY ON THIS SCRIPT. IT IS EXPERIMENTAL AND
