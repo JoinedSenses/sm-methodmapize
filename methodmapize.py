@@ -471,7 +471,7 @@ for i in range(1, len(sys.argv)):
 		print('Updating syntax on {}'.format(sys.argv[i]))
 
 		# _: int retagging
-		code = re.sub(r'\b_:(.*?)(,[ \t]*|[)]+|;)', r'view_as<int>(\1)\2', code)
+		code = re.sub(r'\b_:(.*?)((?:\]|,)[ \t]*|[)]+|;)', r'view_as<int>(\1)\2', code)
 
 		# type:whatever -> view_as<type>(whatever)
 		code = reLoop(r'(=[ \t]*)(\w+):(.*?)(,|;)(?=(?:[^{]*{[^}]*})*[^}]*$)(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)(?=(?:[^\(]*\([^\)]*\))*[^\)]*$)', r'\1view_as<\2>(\3)\4', code, re.M)
@@ -543,7 +543,7 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'(BuildPath\()[ \t]*PathType:*', r'\1', code)
 
 		# String:whatever[] -> char[] whatever
-		code = re.sub(r'String:*(\w+)(\[\])', r'char\2 \1', code)
+		code = re.sub(r'(?<!new )String:*(\w+)((?:\[\])+)', r'char\2 \1', code)
 
 		# ***********************************************************************************
 		# ## Var Declarations ##
@@ -560,7 +560,7 @@ for i in range(1, len(sys.argv)):
 		# Same thing, but for new String:whatever[1], Float:whatever, whatever;
 		code = reLoop(r'^([ \t]*)(new[ \t]+.+),[ \t]+(\w+(?:\[[ \t]*\w+[ \t]*\])?[ \t]*)(?:,|=[ \t]*\-?(?:\d+|\w+)[ \t]*(?:\)|,)|;)(?=(?:[^{]*{[^}]*})*[^}]*$)(?=(?:[^"]*"[^"]*")*[^"]*$)(?=[^)]*$)', r'\1\2;\n\1int \3;\n\1', code, re.M)
 		code = re.sub(r'(?<!=)(?<! )(new\b +)(\w+(?:\[.+?\][ =]*\d*)*)(;|[ \t]*,[ \t]*)', r'\1 int \2\3', code)
-		code = reLoop(r'^([ \t]*)(new\b(?!.*=[ \t]*\w+[ \t]*\()[^(\n]+)(.*?\),|,[ \t]*)(.*?)(;|,[ \t]*)', r'\1\2;\n\1\4;\1', code, re.M)
+		code = reLoop(r'^([ \t]*)(new\b(?!.*=[ \t]*\w+[ \t]*\()[^(\n\{]+)(.*?\),|,[ \t]*)(.*?)(;|,[ \t]*)', r'\1\2;\n\1\4;\1', code, re.M)
 		code = re.sub(r'^([ \t]*)new[ \t]+(\w+[ \t:]+\w)', r'\1\2', code, 0, re.M)
 		# ************************************************************************************
 
@@ -617,6 +617,14 @@ for i in range(1, len(sys.argv)):
 			pattern = r'Handle[ \t]+'+var+r'\b'
 			replace = r'ArrayList '+var
 			code = re.sub(pattern, replace, code)
+
+		# Handle var -> ConVar var
+		for m in re.finditer(r'([\w_]+)[ \t]*=[ \t]*FindConVar\(', code):
+			var = m.group(1)
+			pattern = r'Handle[ \t]'+var+r'\b'
+			replace = r'ConVar '+var
+			code = re.sub(pattern, replace, code)
+
 
 		# Redundancy check on converting handles to ArrayList class
 		re.sub(r'Handle[ \t]+(\w+[ \t]*=[ \t]*GetNativeCell)', r'ArrayList \1', code)
