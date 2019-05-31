@@ -149,13 +149,13 @@ for i in range(1, len(sys.argv)):
 		# -------------->
 		# doThing1(whatever);
 		# doThing2(whatever);
-		code = re.sub(r'(^\w.*?)[ \t]*(?<!:)(\/\/.*?)({)', r'\2\n\1 \3', code, 0, re.M)
+		code = re.sub(r'(^\w.*?)[ \t]*(?<!:)(\/\/.*?)({)$', r'\2\n\1 \3', code, 0, re.M)
 		code = re.sub(r'(^\w.*?)[ \t]*(?<!:)(\/\/.*?$)', r'\2\n\1', code, 0, re.M)
-		code = re.sub(r'(^\t+)(\w.*;)[ \t]*(})', r'\1\2\n\1\3', code, 0, re.M)
-		code = re.sub(r'(^\t+)(\w.*?(?:\:|\))[ \t]*\{) *(\w)', r'\1\2\n\1\t\3', code, 0, re.M)
-		code = re.sub(r'(^\t+)(\w.*;)[ \t]*(?<!:)(\/\/[ \t]*$)', r'\1\2', code, 0, re.M)
-		code = re.sub(r'(^\t+)(\w.*)([ \t]*)(?<!:)(\/\/.*$)', r'\1\4\n\1\2', code, 0, re.M)
-		code = reLoop(r'(^\t+)(\w.*?;)[ \t]+([^)}\n]+$)', r'\1\2\n\1\3', code, re.M)
+		code = re.sub(r'(^[ \t]+)(\w.*;)[ \t]*(})', r'\1\2\n\1\3', code, 0, re.M)
+		code = re.sub(r'(^[ \t]\t+)(\w.*?(?:\:|\))[ \t]*\{) *(\w)', r'\1\2\n\1\t\3', code, 0, re.M)
+		code = re.sub(r'(^[ \t]+)(\w.*;)[ \t]*(?<!:)(\/\/[ \t]*$)', r'\1\2', code, 0, re.M)
+		code = re.sub(r'(^[ \t]+)(\w.*?)[ \t]*(?<!:)(\/\/.*?)([ \t]*\{?)$', r'\1\3\n\1\2 \4', code, 0, re.M)
+		code = reLoop(r'(^[ \t]+)(\w.*?;)[ \t]+([^)}\n]+$)', r'\1\2\n\1\3', code, re.M)
 		# CODE NOW MORE PRETTY
 		# *****************************************************************************
 
@@ -265,6 +265,15 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bSetConVarString[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.SetString(', code)
 		code = re.sub(r'\bUnhookConVarChange[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.RemoveChangeHook(', code)
 
+		# Cookie
+		code = re.sub(r'\bRegClientCookie[ \t]*\([ \t]*\)', r'new Cookie(', code)
+		code = re.sub(r'\bFindClientCookie[ \t]*\(', r'Cookie.Find(', code)
+		code = re.sub(r'\bSetClientCookie[ \t]*\([ \t]*(.*?)[ \t]*,[ \t]*([^\,]+)[ \t]*', r'\2.Set(\1', code)
+		code = re.sub(r'\bGetClientCookie[ \t]*\([ \t]*(.*?)[ \t]*,[ \t]*([^\,]+)[ \t]*', r'\2.Get(\1', code)
+		code = re.sub(r'\bSetAuthIdCookie[ \t]*\([ \t]*(.*?)[ \t]*,[ \t]*([^\,]+)[ \t]*', r'\2.SetByAuthId(\1', code)
+		code = re.sub(r'\bSetCookiePrefabMenu[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.SetPrefabMenu(', code)
+		code = re.sub(r'\bGetCookieAccess[ \t]*\([ \t]*(.*?)[ \t]*\)', r'\1.AccessLevel', code)
+
 		# DataPack
 		code = re.sub(r'\bCreateDataPack[ \t]*\([ \t]*\)', r'new DataPack()', code)
 		code = re.sub(r'\bWritePackCell[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.WriteCell(', code)
@@ -338,7 +347,6 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bSetEventBroadcast[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*([^\)]+)[ \t]*\)', r'\1.BroadcastDisabled = \2', code)
 
 		# DirectoryListing
-		code = re.sub(r'\b\w+[ \t]+(.*?)[ \t]*=[ \t]*(OpenDirectory)', r'DirectoryListing \1 = \2', code)
 		code = re.sub(r'\bReadDirEntry[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.GetNext(', code)
 
 		# File
@@ -352,6 +360,15 @@ for i in range(1, len(sys.argv)):
 		code = re.sub(r'\bWriteStringLine[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.WriteString(', code)
 		code = re.sub(r'\bFilePosition[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'\1.Position', code)
 		# TODO: ReadFileCell & ReadIntX
+
+		# Forwards
+		code = re.sub(r'\bCreateGlobalForward[ \t]*\(', r'new GlobalForward(', code)
+		code = re.sub(r'\bGetForwardFunctionCount[ \t]*\([ \t]*(.*?)[ \t]*\)', r'\1.FunctionCount', code)
+
+		code = re.sub(r'\bCreateForward[ \t]*\(', r'new PrivateForward(', code)
+		code = re.sub(r'\bAddToForward[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.AddFunction(', code)
+		code = re.sub(r'\bRemoveFromForward[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.RemoveFunction(', code)
+		code = re.sub(r'\bRemoveAllFromForward[ \t]*\([ \t]*([^\,]+)[ \t]*,[ \t]*', r'\1.RemoveAllFunctions(', code)
 
 		# Handles
 		code = re.sub(r'\bCloseHandle[ \t]*\([ \t]*([^\)]+)[ \t]*\)', r'delete \1', code)
@@ -470,9 +487,6 @@ for i in range(1, len(sys.argv)):
 		# GENERAL SYNTAX UPDATES
 		print('Updating syntax on {}'.format(sys.argv[i]))
 
-		# _: int retagging
-		code = re.sub(r'\b_:(.*?)((?:\]|,)[ \t]*|[)]+|;)', r'view_as<int>(\1)\2', code)
-
 		# type:whatever -> view_as<type>(whatever)
 		code = reLoop(r'(=[ \t]*)(\w+):(.*?)(,|;)(?=(?:[^{]*{[^}]*})*[^}]*$)(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)(?=(?:[^\(]*\([^\)]*\))*[^\)]*$)', r'\1view_as<\2>(\3)\4', code, re.M)
 
@@ -560,9 +574,12 @@ for i in range(1, len(sys.argv)):
 		# Same thing, but for new String:whatever[1], Float:whatever, whatever;
 		code = reLoop(r'^([ \t]*)(new[ \t]+.+),[ \t]+(\w+(?:\[[ \t]*\w+[ \t]*\])?[ \t]*)(?:,|=[ \t]*\-?(?:\d+|\w+)[ \t]*(?:\)|,)|;)(?=(?:[^{]*{[^}]*})*[^}]*$)(?=(?:[^"]*"[^"]*")*[^"]*$)(?=[^)]*$)', r'\1\2;\n\1int \3;\n\1', code, re.M)
 		code = re.sub(r'(?<!=)(?<! )(new\b +)(\w+(?:\[.+?\][ =]*\d*)*)(;|[ \t]*,[ \t]*)', r'\1 int \2\3', code)
-		code = reLoop(r'^([ \t]*)(new\b(?!.*=[ \t]*\w+[ \t]*\()[^(\n\{]+)(.*?\),|,[ \t]*)(.*?)(;|,[ \t]*)', r'\1\2;\n\1\4;\1', code, re.M)
+		code = reLoop(r'^([ \t]*)(new\b(?!.*=[ \t]*\w+[ \t]*\()[^\(\n\{]+)([^\(]+\),|,[ \t]*)(.*?)(;|,[ \t]*)', r'\1\2;\n\1\4;\1', code, re.M)
 		code = re.sub(r'^([ \t]*)new[ \t]+(\w+[ \t:]+\w)', r'\1\2', code, 0, re.M)
 		# ************************************************************************************
+
+		# _: int retagging
+		code = re.sub(r'\b_:(.*?)((?:\]|,)[ \t]*|[)]+|;)', r'view_as<int>(\1)\2', code)
 
 		code = re.sub(r'\bGetClientAuthString\([ \t]*(.*?,)', r'GetClientAuthId(\1 AuthId_Steam2,', code)
 
@@ -607,7 +624,22 @@ for i in range(1, len(sys.argv)):
 		# Handle var -> File var
 		code = replFileType(code)
 
-		dataTypes = ["ArrayList", "ArrayStack", "StringMap", "DataPack", "Transaction", "KeyValues", "Menu", "Panel", "Regex", "SMCParser", "TopMenu"]
+		dataTypes = [
+			  "ArrayList"
+			, "ArrayStack"
+			, "Cookie"
+			, "DataPack"
+			, "GlobalForward"
+			, "KeyValues"
+			, "Menu"
+			, "Panel"
+			, "PrivateForward"
+			, "Regex"
+			, "SMCParser"
+			, "StringMap"
+			, "TopMenu"
+			, "Transaction"
+		]
 		for dataType in dataTypes:
 			code = replaceDataType(dataType, code)
 
@@ -625,6 +657,11 @@ for i in range(1, len(sys.argv)):
 			replace = r'ConVar '+var
 			code = re.sub(pattern, replace, code)
 
+		for m in re.finditer(r'([\w_]+)[ \t]*=[ \t]*OpenDirectory\(', code):
+			var = m.group(1)
+			pattern = r'Handle[ \t]+'+var+r'\b'
+			replace = r'DirectoryListing '+var
+			code = re.sub(pattern, replace, code)
 
 		# Redundancy check on converting handles to ArrayList class
 		re.sub(r'Handle[ \t]+(\w+[ \t]*=[ \t]*GetNativeCell)', r'ArrayList \1', code)
