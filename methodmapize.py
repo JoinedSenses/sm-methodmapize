@@ -448,7 +448,7 @@ for i in range(1, len(sys.argv)):
 		m = re.search(r'\bSocketConnect\([ \t]*.*?[ \t]*,[ \t]*(.*?)[ \t]*,[ \t]*(.*?)[ \t]*,[ \t]*(.*?)[ \t]*,', code)
 		if m: # Connect, Receive, Disconnect
 			for i in range(1, 3):
-				code = re.sub(r'(^public[ \t])' + r'([ \t]*\b' + m.group(i) + r'\b[ \t]*)', r'\1void \2', code, 0, re.M)	
+				code = re.sub(r'(^public[ \t])[ \t]*\b' + m.group(i) + r'\b[ \t]*)', r'\1void \2', code, 0, re.M)	
 
 
 		# -- Remove deprecated FCVAR_PLUGIN
